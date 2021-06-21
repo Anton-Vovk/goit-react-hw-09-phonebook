@@ -1,15 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getLogged } from '../../redux/auth/auth-selector';
 import styles from './Navigation.module.css';
 
-const Navigation = ({ isLogged }) => {
+function Navigation() {
+  const isLogged = useSelector(getLogged);
+
   return (
     <div>
       <ul className={styles.navigation}>
         <li>
-          <NavLink className={styles.link} exact activeClassName="" to="/">
+          <NavLink className={styles.link} activeClassName="" to="/" exact>
             <button className={styles.btn} type="button">
               Home
             </button>
@@ -27,10 +29,6 @@ const Navigation = ({ isLogged }) => {
       </ul>
     </div>
   );
-};
+}
 
-const mapStateToProps = state => ({
-  isLogged: getLogged(state),
-});
-
-export default connect(mapStateToProps)(Navigation);
+export default Navigation;

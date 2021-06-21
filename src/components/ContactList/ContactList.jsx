@@ -1,11 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from '../../redux/phonebook/phonebook-operations';
 import { getFilteredContacts } from '../../redux/phonebook/phonebook-selectors';
 import styles from './ContactList.module.css';
 
-const ContactList = ({ contacts, deleteContact }) => {
+const ContactList = () => {
+  const contacts = useSelector(getFilteredContacts);
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.listSection}>
       <ul>
@@ -14,8 +16,8 @@ const ContactList = ({ contacts, deleteContact }) => {
             {name} - {number}
             <button
               className={styles.button}
-              type='button'
-              onClick={() => deleteContact(id)}
+              type="button"
+              onClick={() => dispatch(deleteContact(id))}
             >
               Delete
             </button>
@@ -26,17 +28,4 @@ const ContactList = ({ contacts, deleteContact }) => {
   );
 };
 
-ContactList.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  deleteContact: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({
-  contacts: getFilteredContacts(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  deleteContact: id => dispatch(deleteContact(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+export default ContactList;

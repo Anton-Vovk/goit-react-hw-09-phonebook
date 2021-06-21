@@ -39,7 +39,6 @@ class RegisterForm extends Component {
           </label>
           <label className={styles.registrationLabel}>
             <span className={styles.inputTitle}>Email</span>
-
             <input
               className={styles.registrationInput}
               type="email"

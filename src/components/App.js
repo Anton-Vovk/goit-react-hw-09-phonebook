@@ -1,12 +1,12 @@
-import React, { lazy, Suspense, Component } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Switch, Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Loader from 'react-loader-spinner';
-import { connect } from 'react-redux';
 import NavBar from './NavBar';
 import routes from '../routes';
 import { getCurrentUser } from '../redux/auth/auth-operations';
-import PublicRoute from './PublickRoute';
 import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublickRoute';
 import styles from './App.module.css';
 
 const HomePage = lazy(() =>
@@ -23,58 +23,55 @@ const LoginPage = lazy(() =>
   import('../pages/LoginPage' /* webpackChunkName: "log-page" */),
 );
 
-class App extends Component {
-  componentDidMount() {
-    this.props.onGetCurrentUser();
-  }
+function App() {
+  const dispatch = useDispatch();
 
-  render() {
-    return (
-      <>
-        <NavBar />
-        <Suspense
-          fallback={
-            <Loader
-              className={styles.Loader}
-              type="Oval"
-              color="#1e99e0"
-              height={200}
-              width={200}
-            />
-          }
-        >
-          <Switch>
-            <PublicRoute exact path={routes.home} component={HomePage} />
-            <PrivateRoute
-              exact
-              path={routes.contacts}
-              component={PhonebookPage}
-              redirectTo={routes.login}
-            />
-            <PublicRoute
-              exact
-              restricted
-              path={routes.register}
-              component={RegisterPage}
-              redirectTo={routes.contacts}
-            />
-            <PublicRoute
-              exact
-              restricted
-              path={routes.login}
-              component={LoginPage}
-              redirectTo={routes.contacts}
-            />
-            <Redirect to={routes.home} />
-          </Switch>
-        </Suspense>
-      </>
-    );
-  }
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+
+  return (
+    <>
+      <NavBar />
+      <Suspense
+        fallback={
+          <Loader
+            className={styles.Loader}
+            type="Oval"
+            color="#1e99e0"
+            height={200}
+            width={200}
+          />
+        }
+      >
+        <Switch>
+          <PublicRoute exact path={routes.home} component={HomePage} />
+          <PrivateRoute
+            exact
+            path={routes.contacts}
+            component={PhonebookPage}
+            redirectTo={routes.login}
+          />
+          <PublicRoute
+            exact
+            restricted
+            path={routes.register}
+            component={RegisterPage}
+            redirectTo={routes.contacts}
+          />
+          <PublicRoute
+            exact
+            restricted
+            path={routes.login}
+            component={LoginPage}
+            redirectTo={routes.contacts}
+          />
+
+          <Redirect to={routes.home} />
+        </Switch>
+      </Suspense>
+    </>
+  );
 }
 
-const mapDispatchToProps = {
-  onGetCurrentUser: getCurrentUser,
-};
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;

@@ -1,39 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { filterContacts } from '../../redux/phonebook/phonebook-actions';
-import styles from './Filter.module.css';
 import { getFilter } from '../../redux/phonebook/phonebook-selectors';
+import styles from './Filter.module.css';
 
-const Filter = ({ filter, inputHandler }) => {
+const Filter = () => {
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+
   return (
     <>
       <h4 className={styles.title}>Find contacts by name </h4>
       <label className={styles.label}>
         <input
-          onChange={inputHandler}
-          type="text"
-          name="filter"
-          placeholder="Search name"
-          value={filter}
           className={styles.input}
+          name="filter"
+          type="text"
+          value={filter}
+          onChange={event => dispatch(filterContacts(event.target.value))}
+          placeholder="Search name"
         ></input>
       </label>
     </>
   );
 };
 
-Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
-  inputHandler: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({
-  filter: getFilter(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  inputHandler: event => dispatch(filterContacts(event.target.value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default Filter;
