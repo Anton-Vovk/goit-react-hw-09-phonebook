@@ -24,7 +24,7 @@ function Phonebook() {
 
       <ContactList />
       {isLoading && (
-        <Loader type="Watch" color="blue" height={100} width={100} />
+        <Loader type="Watch" color="#1e99e0" height={100} width={100} />
       )}
     </div>
   );
