@@ -16,7 +16,7 @@ function LoginForm() {
     setPassword(prevPass => target.value);
   };
 
-  const SubmitHandler = event => {
+  const submitHandler = event => {
     event.preventDefault();
     dispatch(login({ email, password }));
     setEmail(prevMail => '');
@@ -25,7 +25,7 @@ function LoginForm() {
 
   return (
     <div>
-      <form className={styles.form} onSubmit={SubmitHandler}>
+      <form className={styles.form} onSubmit={submitHandler}>
         <label className={styles.loginLabel}>
           <span className={styles.inputTitle}>Email</span>
           <input

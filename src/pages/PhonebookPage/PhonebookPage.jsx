@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchContacts } from '../../redux/phonebook/phonebook-operations';
 import { getLoading } from '../../redux/phonebook/phonebook-selectors';
 
-function Phonebook () {
+function Phonebook() {
   const isLoading = useSelector(getLoading);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,7 +24,7 @@ function Phonebook () {
 
       <ContactList />
       {isLoading && (
-        <Loader type='Watch' color='#777' height={100} width={100} />
+        <Loader type="Watch" color="blue" height={100} width={100} />
       )}
     </div>
   );

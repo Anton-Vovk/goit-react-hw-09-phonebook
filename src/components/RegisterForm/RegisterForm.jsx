@@ -12,11 +12,10 @@ class RegisterForm extends Component {
 
   inputHandler = event => {
     const { name, value } = event.target;
-
     this.setState({ [name]: value });
   };
 
-  SubmitHandler = event => {
+  submitHandler = event => {
     event.preventDefault();
     this.props.onRegister(this.state);
     this.setState({ name: '', email: '', password: '' });
@@ -26,7 +25,7 @@ class RegisterForm extends Component {
     const { email, password, name } = this.state;
     return (
       <div>
-        <form onSubmit={this.SubmitHandler} className={styles.form}>
+        <form onSubmit={this.submitHandler} className={styles.form}>
           <label className={styles.registrationLabel}>
             <span className={styles.inputTitle}>Name</span>
             <input

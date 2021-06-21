@@ -5,7 +5,6 @@ import {
   addContactError,
   deleteContactRequest,
   deleteContactSucces,
-  deleteContactError,
   fetchContactsRequest,
   fetchContactsSucces,
   fetchContactsError,
@@ -14,6 +13,7 @@ import {
 // Axios.defaults.baseURL = 'https://goit-phonebook-api.herokuapp.com';
 
 //================ асинхронный вариант ===================
+
 const fetchContacts = () => async dispatch => {
   dispatch(fetchContactsRequest());
 

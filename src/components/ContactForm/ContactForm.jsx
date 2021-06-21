@@ -20,7 +20,7 @@ function ContactForm() {
     setNumber(prevNumber => target.value);
   };
 
-  const SubmitHandler = event => {
+  const submitHandler = event => {
     event.preventDefault();
 
     const hasContactName = myContacts.some(item => {
@@ -46,7 +46,7 @@ function ContactForm() {
 
   return (
     <>
-      <form className={styles.form} onSubmit={SubmitHandler}>
+      <form className={styles.form} onSubmit={submitHandler}>
         <label className={styles.label}>
           Name
           <input
