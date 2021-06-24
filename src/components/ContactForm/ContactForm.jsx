@@ -9,52 +9,89 @@ import { getContacts } from '../../redux/phonebook/phonebook-selectors';
 function ContactForm() {
   const myContacts = useSelector(getContacts);
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  // const [name, setName] = useState('');
+  // const [number, setNumber] = useState('');
+  // const nameChange = ({ target }) => {
+  //   setName(prevName => target.value);
+  // };
+  // const numberChange = ({ target }) => {
+  //   setNumber(prevNumber => target.value);
+  // };
 
-  const nameChange = ({ target }) => {
-    setName(prevName => target.value);
+  // const submitHandler = event => {
+  // event.preventDefault();
+
+  // const hasContactName = myContacts.some(item => {
+  //   return item.name === name;
+  // });
+  // const hasContactNumber = myContacts.some(item => {
+  //   return item.number === number;
+  // });
+
+  // if (hasContactName) {
+  //   alert(`${name} is already in contacts!!!`);
+  //   return;
+  // }
+  // if (hasContactNumber) {
+  //   alert(`${number} is already in contacts!!!`);
+  //   return;
+  // }
+
+  // dispatch(addContact(contact));
+  // setName(prevName => '');
+  // setNumber(prevNumber => '');
+  // };
+
+  const [contact, setContact] = useState({
+    name: '',
+    number: '',
+  });
+
+  const handleContactChange = event => {
+    let inputName = event.currentTarget.name;
+    let inputValue = event.currentTarget.value;
+    setContact(prev => ({
+      ...prev,
+      [inputName]: inputValue,
+    }));
   };
-
-  const numberChange = ({ target }) => {
-    setNumber(prevNumber => target.value);
-  };
-
-  const submitHandler = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-
+    let contactForAdd = { name: contact.name, number: contact.number };
     const hasContactName = myContacts.some(item => {
-      return item.name === name;
+      return item.contact.name === contact.name;
     });
     const hasContactNumber = myContacts.some(item => {
-      return item.number === number;
+      return item.contact.number === contact.number;
     });
 
     if (hasContactName) {
-      alert(`${name} is already in contacts!!!`);
+      alert(`${contact.name} is already in contacts!!!`);
       return;
     }
     if (hasContactNumber) {
-      alert(`${number} is already in contacts!!!`);
+      alert(`${contact.number} is already in contacts!!!`);
       return;
     }
+    dispatch(addContact(contactForAdd));
 
-    dispatch(addContact(name, number));
-    setName(prevName => '');
-    setNumber(prevNumber => '');
+    reset();
+  };
+  const reset = () => {
+    setContact({ name: '', number: '' });
   };
 
   return (
     <>
-      <form className={styles.form} onSubmit={submitHandler}>
+      <form className={styles.form} onSubmit={handleSubmit} type="submit">
         <label className={styles.label}>
           Name
           <input
             className={styles.input}
             name="name"
             type="text"
-            value={name}
-            onChange={nameChange}
+            value={contact.name}
+            onChange={handleContactChange}
             placeholder="Add name"
             required
           ></input>
@@ -65,8 +102,8 @@ function ContactForm() {
             className={styles.input}
             name="number"
             type="tel"
-            value={number}
-            onChange={numberChange}
+            value={contact.number}
+            onChange={handleContactChange}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             placeholder="111-11-11"
             required

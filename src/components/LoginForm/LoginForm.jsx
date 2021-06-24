@@ -4,36 +4,49 @@ import { login } from '../../redux/auth/auth-operations';
 import styles from './LoginForm.module.css';
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
+  });
   const dispatch = useDispatch();
 
-  const emailChange = ({ target }) => {
-    setEmail(prevEmail => target.value);
-  };
+  // const emailChange = ({ target }) => {
+  //   setEmail(prevEmail => target.value);
+  // };
 
-  const passwordChange = ({ target }) => {
-    setPassword(prevPass => target.value);
-  };
+  // const passwordChange = ({ target }) => {
+  //   setPassword(prevPass => target.value);
+  // };
 
-  const submitHandler = event => {
+  // const submitHandler = event => {
+  //   event.preventDefault();
+  //   dispatch(login({ email, password }));
+  //   setEmail(prevMail => '');
+  //   setPassword(prevPas => '');
+  // };
+  const handleChange = event => {
     event.preventDefault();
-    dispatch(login({ email, password }));
-    setEmail(prevMail => '');
-    setPassword(prevPas => '');
+    dispatch(login({ user }));
+    const fieldName = event.target.dataset.name;
+    const fieldValue = event.target.value;
+    setUser(prev => ({ ...prev, [fieldName]: fieldValue }));
   };
 
   return (
     <div>
-      <form className={styles.form} onSubmit={submitHandler}>
+      <form className={styles.form} onSubmit={handleChange}>
         <label className={styles.loginLabel}>
           <span className={styles.inputTitle}>Email</span>
           <input
             className={styles.loginInput}
             type="email"
             name="email"
-            value={email}
-            onChange={emailChange}
+            data-name="email"
+            value={user.email}
+            onChange={handleChange}
           ></input>
         </label>
         <label className={styles.loginLabel}>
@@ -42,8 +55,9 @@ function LoginForm() {
             className={styles.loginInput}
             type="password"
             name="password"
-            value={password}
-            onChange={passwordChange}
+            data-name="password"
+            value={user.password}
+            onChange={handleChange}
           ></input>
         </label>
         <button className={styles.loginButton}>Login</button>
