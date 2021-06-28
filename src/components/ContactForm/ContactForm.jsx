@@ -39,7 +39,7 @@ function ContactForm() {
       return;
     }
 
-    dispatch(addContact(contact));
+    dispatch(addContact(contact.name, contact.number));
     reset();
   };
 
