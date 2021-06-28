@@ -9,60 +9,25 @@ import { getContacts } from '../../redux/phonebook/phonebook-selectors';
 function ContactForm() {
   const myContacts = useSelector(getContacts);
   const dispatch = useDispatch();
-  // const [name, setName] = useState('');
-  // const [number, setNumber] = useState('');
-  // const nameChange = ({ target }) => {
-  //   setName(prevName => target.value);
-  // };
-  // const numberChange = ({ target }) => {
-  //   setNumber(prevNumber => target.value);
-  // };
-
-  // const submitHandler = event => {
-  // event.preventDefault();
-
-  // const hasContactName = myContacts.some(item => {
-  //   return item.name === name;
-  // });
-  // const hasContactNumber = myContacts.some(item => {
-  //   return item.number === number;
-  // });
-
-  // if (hasContactName) {
-  //   alert(`${name} is already in contacts!!!`);
-  //   return;
-  // }
-  // if (hasContactNumber) {
-  //   alert(`${number} is already in contacts!!!`);
-  //   return;
-  // }
-
-  // dispatch(addContact(contact));
-  // setName(prevName => '');
-  // setNumber(prevNumber => '');
-  // };
-
   const [contact, setContact] = useState({
     name: '',
     number: '',
   });
 
   const handleContactChange = event => {
-    let inputName = event.currentTarget.name;
+    let inputName = event.currentTarget.dataset.name;
     let inputValue = event.currentTarget.value;
-    setContact(prev => ({
-      ...prev,
-      [inputName]: inputValue,
-    }));
+    setContact(prev => ({ ...prev, [inputName]: inputValue }));
   };
+
   const handleSubmit = event => {
     event.preventDefault();
-    let contactForAdd = { name: contact.name, number: contact.number };
+
     const hasContactName = myContacts.some(item => {
-      return item.contact.name === contact.name;
+      return item.name === contact.name;
     });
     const hasContactNumber = myContacts.some(item => {
-      return item.contact.number === contact.number;
+      return item.number === contact.number;
     });
 
     if (hasContactName) {
@@ -73,10 +38,11 @@ function ContactForm() {
       alert(`${contact.number} is already in contacts!!!`);
       return;
     }
-    dispatch(addContact(contactForAdd));
 
+    dispatch(addContact(contact));
     reset();
   };
+
   const reset = () => {
     setContact({ name: '', number: '' });
   };
@@ -93,6 +59,7 @@ function ContactForm() {
             value={contact.name}
             onChange={handleContactChange}
             placeholder="Add name"
+            data-name="name"
             required
           ></input>
         </label>
@@ -106,6 +73,7 @@ function ContactForm() {
             onChange={handleContactChange}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             placeholder="111-11-11"
+            data-name="number"
             required
           ></input>
         </label>

@@ -4,40 +4,26 @@ import { login } from '../../redux/auth/auth-operations';
 import styles from './LoginForm.module.css';
 
 function LoginForm() {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     email: '',
     password: '',
   });
-  const dispatch = useDispatch();
 
-  // const emailChange = ({ target }) => {
-  //   setEmail(prevEmail => target.value);
-  // };
-
-  // const passwordChange = ({ target }) => {
-  //   setPassword(prevPass => target.value);
-  // };
-
-  // const submitHandler = event => {
-  //   event.preventDefault();
-  //   dispatch(login({ email, password }));
-  //   setEmail(prevMail => '');
-  //   setPassword(prevPas => '');
-  // };
   const handleChange = event => {
-    event.preventDefault();
-    dispatch(login({ user }));
-    const fieldName = event.target.dataset.name;
-    const fieldValue = event.target.value;
+    const fieldName = event.currentTarget.dataset.name;
+    const fieldValue = event.currentTarget.value;
     setUser(prev => ({ ...prev, [fieldName]: fieldValue }));
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    dispatch(login(user));
   };
 
   return (
     <div>
-      <form className={styles.form} onSubmit={handleChange}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.loginLabel}>
           <span className={styles.inputTitle}>Email</span>
           <input

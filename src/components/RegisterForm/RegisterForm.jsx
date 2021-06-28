@@ -1,72 +1,69 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import { register } from '../../redux/auth/auth-operations';
+import { useDispatch } from 'react-redux';
 import styles from './RegisterForm.module.css';
 
-class RegisterForm extends Component {
-  state = {
+function RegisterForm() {
+  const dispatch = useDispatch();
+  const [user, setUser] = useState({
     name: '',
     email: '',
     password: '',
+  });
+
+  const handleChange = event => {
+    const fieldName = event.currentTarget.dataset.name;
+    const fieldValue = event.currentTarget.value;
+    setUser(prev => ({ ...prev, [fieldName]: fieldValue }));
   };
 
-  inputHandler = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  };
-
-  submitHandler = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    this.props.onRegister(this.state);
-    this.setState({ name: '', email: '', password: '' });
+    dispatch(register(user));
   };
 
-  render() {
-    const { email, password, name } = this.state;
-    return (
-      <div>
-        <form onSubmit={this.submitHandler} className={styles.form}>
-          <label className={styles.registrationLabel}>
-            <span className={styles.inputTitle}>Name</span>
-            <input
-              className={styles.registrationInput}
-              type="text"
-              name="name"
-              value={name}
-              onChange={this.inputHandler}
-            ></input>
-          </label>
-          <label className={styles.registrationLabel}>
-            <span className={styles.inputTitle}>Email</span>
-            <input
-              className={styles.registrationInput}
-              type="email"
-              name="email"
-              value={email}
-              onChange={this.inputHandler}
-            ></input>
-          </label>
-          <label className={styles.registrationLabel}>
-            <span className={styles.inputTitle}>Password</span>
-            <input
-              className={styles.registrationInput}
-              type="password"
-              name="password"
-              value={password}
-              onChange={this.inputHandler}
-            ></input>
-          </label>
-          <button className={styles.registrationButton} type="submit">
-            Register
-          </button>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <label className={styles.registrationLabel}>
+          <span className={styles.inputTitle}>Name</span>
+          <input
+            className={styles.registrationInput}
+            type="text"
+            name="name"
+            value={user.name}
+            onChange={handleChange}
+            data-name="name"
+          ></input>
+        </label>
+        <label className={styles.registrationLabel}>
+          <span className={styles.inputTitle}>Email</span>
+          <input
+            className={styles.registrationInput}
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            data-name="email"
+          ></input>
+        </label>
+        <label className={styles.registrationLabel}>
+          <span className={styles.inputTitle}>Password</span>
+          <input
+            className={styles.registrationInput}
+            type="password"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+            data-name="password"
+          ></input>
+        </label>
+        <button className={styles.registrationButton} type="submit">
+          Register
+        </button>
+      </form>
+    </>
+  );
 }
 
-const mapDispatchToProps = {
-  onRegister: register,
-};
-
-export default connect(null, mapDispatchToProps)(RegisterForm);
+export default RegisterForm;
